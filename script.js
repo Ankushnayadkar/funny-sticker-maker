@@ -106,6 +106,11 @@ function addText() {
 
 // Download sticker button
 function downloadSticker() {
+  // First redraw everything to ensure canvas is not empty
+  const text = document.getElementById("textInput").value;
+  drawSticker(text);
+
+  // Then export as PNG with transparency
   const link = document.createElement("a");
   link.download = "sticker.png";
   link.href = canvas.toDataURL("image/png");
