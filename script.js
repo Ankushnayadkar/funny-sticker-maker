@@ -1,63 +1,110 @@
 const canvas = document.getElementById("canvas");
 const ctx = canvas.getContext("2d");
 
-let img = null;
-let text = "";
-let textX = 200;
-let textY = 200;
+let uploadedImage = null;
 
-function draw() {
-ctx.clearRect(0,0,400,400);
-if (img) ctx.drawImage(img,0,0,400,400);
+document.getElementById("upload").addEventListener("change", e => {
+  const file = e.target.files[0];
+  const reader = new FileReader();
 
-ctx.fillStyle = document.getElementById("colorPicker").value;
-ctx.font = "30px " + document.getElementById("fontSelect").value;
-ctx.textAlign = "center";
-ctx.fillText(text, textX, textY);
+  reader.onload = event => {
+    const img = new Image();
+    img.onload = () => {
+      uploadedImage = img;
+      drawSticker();
+    };
+    img.src = event.target.result;
+  };
+
+  reader.readAsDataURL(file);
+});
+
+function drawSticker(text = "") {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+  const template = document.getElementById("templateSelect").value;
+
+  ctx.save();
+
+  if (template === "circle") {
+    ctx.beginPath();
+    ctx.arc(250, 250, 230, 0, Math.PI * 2);
+    ctx.clip();
+  }
+
+  if (template === "star") {
+    ctx.beginPath();
+    for (let i = 0; i < 5; i++) {
+      ctx.lineTo(
+        250 + 200 * Math.cos((18 + i * 72) * Math.PI / 180),
+        250 - 200 * Math.sin((18 + i * 72) * Math.PI / 180)
+      );
+      ctx.lineTo(
+        250 + 80 * Math.cos((54 + i * 72) * Math.PI / 180),
+        250 - 80 * Math.sin((54 + i * 72) * Math.PI / 180)
+      );
+    }
+    ctx.closePath();
+    ctx.clip();
+  }
+
+  if (uploadedImage) {
+    ctx.drawImage(uploadedImage, 0, 0, canvas.width, canvas.height);
+  }
+
+  ctx.restore();
+
+  if (text) drawText(text);
 }
 
-document.getElementById("upload").onchange = e => {
-const file = e.target.files[0];
-const reader = new FileReader();
+function drawText(text) {
+  const font = document.getElementById("fontSelect").value;
+  const color = document.getElementById("colorPicker").value;
 
-reader.onload = () => {
-img = new Image();
-img.onload = draw;
-img.src = reader.result;
-};
+  ctx.font = "bold 40px " + font;
+  ctx.textAlign = "center";
+  ctx.fillStyle = color;
+  ctx.strokeStyle = "black";
+  ctx.lineWidth = 4;
 
-reader.readAsDataURL(file);
-};
+  ctx.fillText(text, 250, 460);
+  ctx.strokeText(text, 250, 460);
+}
 
-document.getElementById("addText").onclick = () => {
-text = document.getElementById("textInput").value;
-draw();
-};
+function addText() {
+  const text = document.getElementById("textInput").value;
+  drawSticker(text);
+}
 
-document.getElementById("fontSelect").onchange = draw;
-document.getElementById("colorPicker").onchange = draw;
+function downloadSticker() {
+  const link = document.createElement("a");
+  link.download = "sticker.png";
+  link.href = canvas.toDataURL();
+  link.click();
+}
 
-canvas.onmousedown = e => {
-textX = e.offsetX;
-textY = e.offsetY;
-draw();
-};
+const emojiPanel = document.getElementById("emojiPanel");
 
-document.getElementById("download").onclick = () => {
-const link = document.createElement("a");
-link.download = "sticker.png";
-link.href = canvas.toDataURL();
-link.click();
-};
+const emojis = [
+"😀","😁","😂","🤣","😎","😍","🥵","🤯","😡","🥶",
+"🤡","👻","🔥","💀","💯","🚀","😴","🤪","😇","🤖",
+"🐱","🐶","🦄","🐸","🍕","🍔","🍺","❤️","⭐","⚡"
+];
 
-document.getElementById("randomLine").onclick = () => {
-const cat = document.getElementById("libraryCategory").value;
-if (!cat) return;
+emojis.forEach(e => {
+  const btn = document.createElement("button");
+  btn.innerHTML = e;
+  btn.onclick = () => addEmoji(e);
+  emojiPanel.appendChild(btn);
+});
 
-const lines = LIBRARY[cat];
-const random = lines[Math.floor(Math.random()*lines.length)];
+function toggleEmoji() {
+  emojiPanel.style.display =
+    emojiPanel.style.display === "none" ? "block" : "none";
+}
 
-text = random;
-document.getElementById("textInput").value = random;
-draw();
-};
+function addEmoji(e) {
+  const input = document.getElementById("textInput");
+  input.value += e;
+  drawSticker(input.value);
+}
