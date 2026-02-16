@@ -49,9 +49,21 @@
   <select id="templateSelect">
     <option value="circle">Circle</option>
     <option value="star">Star</option>
-    <!-- Later you can add: speech, cloud, badge -->
+    <option value="speech">Speech Bubble</option>
+    <option value="cloud">Cloud</option>
+    <option value="badge">Badge</option>
+    <option value="meme">Meme Frame</option>
   </select><br>
-  
+
+  <!-- Font selector -->
+  <label for="fontSelect">Choose Font:</label>
+  <select id="fontSelect">
+    <option value="Comic Sans MS">Comic Sans</option>
+    <option value="Impact">Impact</option>
+    <option value="Arial">Arial</option>
+    <option value="Courier New">Courier</option>
+  </select><br>
+
   <!-- Buttons -->
   <button onclick="addText()">Add Text</button>
   <button onclick="downloadSticker()">Download Sticker</button>
@@ -116,6 +128,20 @@
         ctx.stroke();
       }
 
+      // Image-based templates (speech, cloud, badge, meme)
+      if (["speech","cloud","badge","meme"].includes(template)) {
+        const templateImg = new Image();
+        templateImg.src = "templates/" + template + ".png"; // repo path
+        templateImg.onload = () => {
+          ctx.drawImage(templateImg, 0, 0, canvas.width, canvas.height);
+          if (uploadedImage) {
+            ctx.drawImage(uploadedImage, 0, 0, canvas.width, canvas.height);
+          }
+          drawText(text);
+        };
+        return;
+      }
+
       // Draw uploaded image inside template
       if (uploadedImage) {
         ctx.save();
@@ -124,18 +150,22 @@
         ctx.restore();
       }
 
-      // Add text with outline + shadow
-      if (text) {
-        ctx.font = "bold 32px Comic Sans MS";
-        ctx.textAlign = "center";
-        ctx.fillStyle = "#ff4081";
-        ctx.strokeStyle = "#000";
-        ctx.lineWidth = 3;
-        ctx.shadowColor = "rgba(0,0,0,0.5)";
-        ctx.shadowBlur = 6;
-        ctx.fillText(text, canvas.width/2, canvas.height - 40);
-        ctx.strokeText(text, canvas.width/2, canvas.height - 40);
-      }
+      // Add text
+      if (text) drawText(text);
+    }
+
+    // Text styling
+    function drawText(text) {
+      const font = document.getElementById("fontSelect").value;
+      ctx.font = "bold 32px " + font;
+      ctx.textAlign = "center";
+      ctx.fillStyle = "#ff4081";
+      ctx.strokeStyle = "#000";
+      ctx.lineWidth = 3;
+      ctx.shadowColor = "rgba(0,255,255,0.7)"; // neon glow
+      ctx.shadowBlur = 10;
+      ctx.fillText(text, canvas.width/2, canvas.height - 40);
+      ctx.strokeText(text, canvas.width/2, canvas.height - 40);
     }
 
     // Add text button
