@@ -6,27 +6,37 @@
 
 <style>
 body {
-  font-family: Arial;
+  margin: 0;
+  font-family: Arial, sans-serif;
   background: #000;
   color: white;
   text-align: center;
 }
 
+h1 {
+  margin-top: 15px;
+}
+
 .container {
   display: flex;
-  gap: 20px;
   justify-content: center;
-  margin-top: 20px;
+  gap: 20px;
+  padding: 20px;
+  flex-wrap: wrap;
 }
 
 canvas {
   background: white;
   border-radius: 12px;
   cursor: crosshair;
+  box-shadow: 0 0 20px rgba(255,255,255,0.2);
 }
 
 .controls {
   width: 320px;
+  background: #111;
+  padding: 15px;
+  border-radius: 12px;
 }
 
 input, select, button {
@@ -35,20 +45,25 @@ input, select, button {
   margin: 6px 0;
   border-radius: 8px;
   border: none;
+  font-size: 14px;
 }
 
 button {
   background: hotpink;
   color: white;
-  cursor: pointer;
   font-weight: bold;
+  cursor: pointer;
+}
+
+button:hover {
+  background: deeppink;
 }
 </style>
 </head>
 
 <body>
 
-<h1>Sticker Creator Pro</h1>
+<h1>🎨 Sticker Creator Pro</h1>
 
 <div class="container">
 
@@ -58,7 +73,7 @@ button {
 
 <input type="file" id="upload">
 
-<input type="text" id="textInput" placeholder="Type text">
+<input type="text" id="textInput" placeholder="Type text or use library">
 
 <button id="addText">Add Text</button>
 
@@ -89,10 +104,12 @@ button {
 
 <select id="libraryCategory">
 <option value="">Choose Library</option>
-<option value="funny">Funny Memes</option>
-<option value="morning">Morning Wishes</option>
-<option value="office">Office Lines</option>
-<option value="savage">Savage Quotes</option>
+<option value="funny">Funny</option>
+<option value="savage">Savage</option>
+<option value="insulting">Insult</option>
+<option value="wishes">Wishes</option>
+<option value="hindi">Hindi</option>
+<option value="festival">Festival</option>
 </select>
 
 <button id="randomLine">Get Random Line</button>
