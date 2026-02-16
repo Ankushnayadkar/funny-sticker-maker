@@ -3,53 +3,85 @@
 <head>
 <meta charset="UTF-8">
 <title>Funny Sticker Creator</title>
-<link rel="stylesheet" href="style.css">
+<style>
+body {
+  font-family: Arial;
+  background: #111;
+  color: white;
+  text-align: center;
+}
+
+.container {
+  display: flex;
+  gap: 20px;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+canvas {
+  background: white;
+  border-radius: 12px;
+}
+
+.controls {
+  width: 300px;
+}
+
+input, select, button {
+  width: 100%;
+  padding: 10px;
+  margin: 6px 0;
+  border-radius: 8px;
+  border: none;
+}
+
+button {
+  background: hotpink;
+  color: white;
+  cursor: pointer;
+}
+</style>
 </head>
 
 <body>
 
-<h1>🎉 Funny Sticker Creator 🎉</h1>
+<h1>Funny Sticker Creator</h1>
 
 <div class="container">
 
-<div class="editor">
-<canvas id="canvas" width="500" height="500"></canvas>
-</div>
+<canvas id="canvas" width="400" height="400"></canvas>
 
 <div class="controls">
 
 <input type="file" id="upload">
 
-<input type="text" id="textInput" placeholder="Enter text">
+<input type="text" id="textInput" placeholder="Add text">
 
 <select id="fontSelect">
 <option value="Impact">Impact</option>
-<option value="Comic Sans MS">Comic Sans</option>
 <option value="Arial">Arial</option>
+<option value="Comic Sans MS">Comic</option>
 </select>
 
-<input type="color" id="colorPicker">
+<input type="color" id="colorPicker" value="#ff4081">
 
-<select id="emojiSelect">
-<option value="">Emoji</option>
-<option>😎</option>
-<option>😂</option>
-<option>🔥</option>
-<option>💀</option>
+<select id="libraryCategory">
+<option value="">Library</option>
+<option value="funny">Funny</option>
+<option value="morning">Morning</option>
+<option value="office">Office</option>
+<option value="savage">Savage</option>
 </select>
 
-<select id="templateSelect">
-<option value="circle">Circle</option>
-<option value="star">Star</option>
-<option value="heart">Heart</option>
-</select>
+<button id="randomLine">Random Line</button>
 
-<button id="addText">Add Text</button>
-<button id="download">Download Sticker</button>
+<button id="download">Download</button>
 
 </div>
 </div>
 
+<script src="library.js"></script>
 <script src="script.js"></script>
+
 </body>
 </html>
