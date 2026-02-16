@@ -15,6 +15,7 @@ body {
   flex-direction: column;
   justify-content: center; /* vertical center */
   align-items: center;     /* horizontal center */
+  box-sizing: border-box;
 }
 
 @keyframes gradientBG {
@@ -26,23 +27,26 @@ body {
 h1 {
   color: #fff;
   text-shadow: 2px 2px 5px #000;
-  font-size: 2.5em;
+  font-size: 2em;
+  margin: 10px 0;
 }
 
 canvas {
   border: 5px solid #fff;
   border-radius: 20px;
-  margin-top: 20px;
+  margin: 10px 0;
   background: transparent;
   box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+  max-width: 90vw;   /* responsive width */
+  max-height: 60vh;  /* responsive height */
 }
 
 input, button, select {
-  margin: 10px;
-  padding: 12px 25px;
+  margin: 8px;
+  padding: 10px 20px;
   border-radius: 12px;
   border: 3px solid #fff;
-  font-size: 1.1em;
+  font-size: 1em;
 }
 
 button {
