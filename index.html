@@ -4,48 +4,69 @@
   <meta charset="UTF-8">
   <title>🎉 Funny Sticker Creator 🎉</title>
   <style>
+    html, body {
+      height: 100%;
+      margin: 0;
+      padding: 0;
+      overflow: hidden; /* scroll permanently बंद */
+    }
+
     body {
       font-family: 'Comic Sans MS', cursive, sans-serif;
       text-align: center;
       background: linear-gradient(135deg, #ff9a9e, #fad0c4, #fbc2eb, #a6c1ee);
       background-size: 400% 400%;
       animation: gradientBG 15s ease infinite;
-      padding: 30px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      box-sizing: border-box;
     }
+
     @keyframes gradientBG {
       0% {background-position: 0% 50%;}
       50% {background-position: 100% 50%;}
       100% {background-position: 0% 50%;}
     }
+
     h1 {
       color: #fff;
       text-shadow: 2px 2px 5px #000;
-      font-size: 2.5em;
+      font-size: 2em;
+      margin: 10px 0;
     }
+
     canvas {
       border: 5px solid #fff;
       border-radius: 20px;
-      margin-top: 20px;
+      margin: 10px 0;
       background: transparent;
       box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+      max-width: 90vw;
+      max-height: 60vh;
     }
+
     input, button, select {
-      margin: 10px;
-      padding: 12px 25px;
+      margin: 8px;
+      padding: 10px 20px;
       border-radius: 12px;
       border: 3px solid #fff;
-      font-size: 1.1em;
+      font-size: 1em;
     }
+
     button {
       background: #ff4081;
       color: white;
       cursor: pointer;
       transition: transform 0.2s ease, background 0.3s ease;
     }
+
     button:hover {
       background: #e91e63;
       transform: scale(1.1);
     }
+
     select, input {
       background: #fff;
     }
@@ -79,6 +100,22 @@
     <option value="Arial">Arial</option>
     <option value="Courier New">Courier</option>
   </select><br>
+
+  <!-- Emoji picker -->
+  <label for="emojiSelect">Choose Emoji:</label>
+  <select id="emojiSelect" onchange="addEmoji()">
+    <option value="">None</option>
+    <option value="😀">😀</option>
+    <option value="😂">😂</option>
+    <option value="😍">😍</option>
+    <option value="😎">😎</option>
+    <option value="🤩">🤩</option>
+    <option value="🎉">🎉</option>
+  </select><br>
+
+  <!-- Text color picker -->
+  <label for="colorPicker">Choose Text Color:</label>
+  <input type="color" id="colorPicker" value="#ff4081"><br>
 
   <!-- Buttons -->
   <button onclick="addText()">Add Text</button>
@@ -173,9 +210,10 @@
     // Text styling
     function drawText(text) {
       const font = document.getElementById("fontSelect").value;
+      const color = document.getElementById("colorPicker").value; // selected color
       ctx.font = "bold 32px " + font;
       ctx.textAlign = "center";
-      ctx.fillStyle = "#ff4081";
+      ctx.fillStyle = color; // dynamic color
       ctx.strokeStyle = "#000";
       ctx.lineWidth = 3;
       ctx.shadowColor = "rgba(0,255,255,0.7)"; // neon glow
@@ -188,6 +226,14 @@
     function addText() {
       const text = document.getElementById("textInput").value;
       drawSticker(text);
+    }
+
+    // Add emoji to text input
+    function addEmoji() {
+      const emoji = document.getElementById("emojiSelect").value;
+      const textInput = document.getElementById("textInput");
+      textInput.value += emoji; // append emoji to text
+      drawSticker(textInput.value);
     }
 
     // Download sticker button
