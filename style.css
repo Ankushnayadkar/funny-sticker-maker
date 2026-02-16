@@ -1,37 +1,48 @@
 body {
-background: black;
-color: white;
-font-family: Arial;
-text-align: center;
+  margin: 0;
+  background: black;
+  font-family: Arial;
+  color: white;
 }
 
-.toolbar {
-padding: 10px;
-background: #111;
+.topbar {
+  padding: 10px;
+  background: #111;
+  display: flex;
+  gap: 10px;
 }
 
-input, select, button {
-margin: 5px;
-padding: 8px;
-font-size: 14px;
+.topbar input,
+.topbar select,
+.topbar button {
+  padding: 8px;
+  border-radius: 6px;
+  border: none;
 }
 
-canvas {
-border: 1px solid white;
-margin-top: 20px;
-background: black;
+button {
+  background: hotpink;
+  color: white;
+  cursor: pointer;
+}
+
+.main {
+  display: flex;
+  height: calc(100vh - 60px);
 }
 
 #emojiPanel {
-display: none;
-height: 150px;
-overflow-y: scroll;
-background: #222;
-padding: 10px;
+  width: 200px;
+  background: #111;
+  overflow-y: scroll;
+  display: none;
+  padding: 10px;
+  font-size: 28px;
 }
 
-.emoji {
-font-size: 22px;
-cursor: pointer;
-margin: 4px;
+#canvas {
+  margin: auto;
+  background: black;
+  border: 5px solid white;
+  border-radius: 20px;
 }
