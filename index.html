@@ -38,18 +38,24 @@
 <body>
   <h1>🎉 Funny Sticker Creator 🎉</h1>
   
+  <!-- Upload image -->
   <input type="file" id="upload" accept="image/*"><br>
+  
+  <!-- Enter text -->
   <input type="text" id="textInput" placeholder="Add funny text!"><br>
   
   <!-- Template selector -->
+  <label for="templateSelect">Choose Template:</label>
   <select id="templateSelect">
     <option value="circle">Circle</option>
     <option value="star">Star</option>
   </select><br>
   
+  <!-- Buttons -->
   <button onclick="addText()">Add Text</button>
   <button onclick="downloadSticker()">Download Sticker</button>
   
+  <!-- Canvas preview -->
   <canvas id="canvas" width="400" height="400"></canvas>
   
   <script>
