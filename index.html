@@ -1,54 +1,46 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-<meta charset="UTF-8">
-<title>Funny Sticker Maker</title>
-
-<link rel="stylesheet" href="style.css">
-
-<!-- Google Fonts -->
-<link href="https://fonts.googleapis.com/css2?family=Roboto&family=Poppins&family=Oswald&family=Lobster&family=Pacifico&family=Anton&family=Bebas+Neue&family=Montserrat&family=Raleway&family=Playfair+Display&display=swap" rel="stylesheet">
-
+  <title>Funny Sticker Maker</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
 
-<div class="toolbar">
-<input id="textInput" placeholder="Type text...">
+<div class="topbar">
+  <input id="textInput" placeholder="Type text...">
 
-<select id="fontSelect">
-<option>Arial</option>
-<option>Roboto</option>
-<option>Poppins</option>
-<option>Oswald</option>
-<option>Lobster</option>
-<option>Pacifico</option>
-<option>Anton</option>
-<option>Bebas Neue</option>
-<option>Montserrat</option>
-<option>Raleway</option>
-<option>Playfair Display</option>
-</select>
+  <select id="fontSelect">
+    <option>Arial</option>
+    <option>Verdana</option>
+    <option>Georgia</option>
+    <option>Courier New</option>
+    <option>Comic Sans MS</option>
+    <option>Impact</option>
+    <option>Tahoma</option>
+    <option>Trebuchet MS</option>
+  </select>
 
-<select id="templateSelect">
-<option value="none">No Template</option>
-<option value="circle">Circle</option>
-<option value="star">Star</option>
-<option value="square">Square</option>
-<option value="heart">Heart</option>
-</select>
+  <select id="templateSelect">
+    <option value="none">No Template</option>
+    <option value="circle">Circle</option>
+    <option value="star">Star</option>
+    <option value="square">Square</option>
+  </select>
 
-<button id="emojiBtn">😀 Emoji</button>
-<button onclick="addText()">Add Text</button>
-<button onclick="download()">Download</button>
+  <button onclick="toggleEmoji()">😀 Emoji</button>
+  <button onclick="addText()">Add Text</button>
+  <button onclick="download()">Download</button>
 </div>
 
-<!-- Emoji Panel -->
-<div id="emojiPanel"></div>
+<div class="main">
 
-<canvas id="canvas" width="600" height="600"></canvas>
+  <div id="emojiPanel"></div>
+
+  <canvas id="canvas" width="600" height="600"></canvas>
+
+</div>
 
 <script src="script.js"></script>
-
 </body>
 </html>
