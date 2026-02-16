@@ -2,60 +2,13 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Funny Sticker Creator</title>
+<title>Funny Sticker Maker</title>
 
-<style>
-body {
-  margin: 0;
-  font-family: Arial;
-  background: #000;
-  color: white;
-}
+<link rel="stylesheet" href="style.css">
 
-.toolbar {
-  background: #111;
-  padding: 12px;
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-}
+<!-- Google Fonts -->
+<link href="https://fonts.googleapis.com/css2?family=Roboto&family=Poppins&family=Oswald&family=Lobster&family=Pacifico&family=Anton&family=Bebas+Neue&family=Montserrat&family=Raleway&family=Playfair+Display&display=swap" rel="stylesheet">
 
-input, select, button {
-  padding: 8px;
-  font-size: 14px;
-}
-
-canvas {
-  display: block;
-  margin: 20px auto;
-  background: transparent;
-  border: 2px solid #555;
-}
-
-/* emoji panel */
-#emojiPanel {
-  position: fixed;
-  bottom: 10px;
-  left: 10px;
-  width: 300px;
-  height: 220px;
-  background: #111;
-  border: 1px solid #444;
-  overflow-y: auto;
-  padding: 6px;
-  display: none;
-  flex-wrap: wrap;
-  gap: 6px;
-}
-
-#emojiPanel button {
-  font-size: 22px;
-  background: none;
-  border: none;
-  cursor: pointer;
-  font-family: "Apple Color Emoji","Segoe UI Emoji","Noto Color Emoji",sans-serif;
-}
-</style>
 </head>
 
 <body>
@@ -65,159 +18,37 @@ canvas {
 
 <select id="fontSelect">
 <option>Arial</option>
-<option>Impact</option>
-<option>Comic Sans MS</option>
-<option>Courier New</option>
-<option>Verdana</option>
-<option>Georgia</option>
-<option>Trebuchet MS</option>
-<option>Times New Roman</option>
-<option>Tahoma</option>
-<option>Lucida Console</option>
-<option>Palatino</option>
-<option>Garamond</option>
-<option>Bookman</option>
-<option>Avant Garde</option>
-<option>Calibri</option>
-<option>Candara</option>
-<option>Optima</option>
-<option>Futura</option>
-<option>Franklin Gothic</option>
-<option>Gill Sans</option>
-<option>Rockwell</option>
-<option>Century Gothic</option>
-<option>Arial Black</option>
-<option>Impact Label</option>
-<option>Segoe UI</option>
-<option>Monaco</option>
-<option>Consolas</option>
-<option>Brush Script MT</option>
-<option>Courier Prime</option>
-<option>Didot</option>
+<option>Roboto</option>
+<option>Poppins</option>
+<option>Oswald</option>
+<option>Lobster</option>
+<option>Pacifico</option>
+<option>Anton</option>
+<option>Bebas Neue</option>
+<option>Montserrat</option>
+<option>Raleway</option>
+<option>Playfair Display</option>
 </select>
 
 <select id="templateSelect">
 <option value="none">No Template</option>
 <option value="circle">Circle</option>
 <option value="star">Star</option>
-<option value="badge">Badge</option>
-<option value="diamond">Diamond</option>
-<option value="burst">Burst</option>
-<option value="speech">Speech Bubble</option>
+<option value="square">Square</option>
+<option value="heart">Heart</option>
 </select>
 
 <button id="emojiBtn">😀 Emoji</button>
-<button onclick="draw()">Add Text</button>
+<button onclick="addText()">Add Text</button>
 <button onclick="download()">Download</button>
 </div>
 
-<canvas id="canvas" width="500" height="500"></canvas>
-
+<!-- Emoji Panel -->
 <div id="emojiPanel"></div>
 
-<script>
-const canvas = document.getElementById("canvas");
-const ctx = canvas.getContext("2d");
-const textInput = document.getElementById("textInput");
-const fontSelect = document.getElementById("fontSelect");
-const templateSelect = document.getElementById("templateSelect");
-const emojiPanel = document.getElementById("emojiPanel");
+<canvas id="canvas" width="600" height="600"></canvas>
 
-function drawTemplate() {
-  ctx.fillStyle = "#fff";
-  ctx.strokeStyle = "#000";
-  ctx.lineWidth = 4;
-
-  const t = templateSelect.value;
-
-  if (t === "circle") {
-    ctx.beginPath();
-    ctx.arc(250,250,220,0,Math.PI*2);
-    ctx.fill(); ctx.stroke();
-  }
-
-  if (t === "star") {
-    ctx.beginPath();
-    for(let i=0;i<5;i++){
-      ctx.lineTo(250+200*Math.cos((18+i*72)*Math.PI/180),
-                 250-200*Math.sin((18+i*72)*Math.PI/180));
-      ctx.lineTo(250+80*Math.cos((54+i*72)*Math.PI/180),
-                 250-80*Math.sin((54+i*72)*Math.PI/180));
-    }
-    ctx.closePath();
-    ctx.fill(); ctx.stroke();
-  }
-
-  if (t === "diamond") {
-    ctx.beginPath();
-    ctx.moveTo(250,30);
-    ctx.lineTo(470,250);
-    ctx.lineTo(250,470);
-    ctx.lineTo(30,250);
-    ctx.closePath();
-    ctx.fill(); ctx.stroke();
-  }
-
-  if (t === "badge") {
-    ctx.fillRect(60,60,380,380);
-    ctx.strokeRect(60,60,380,380);
-  }
-
-  if (t === "burst") {
-    ctx.beginPath();
-    for(let i=0;i<20;i++){
-      let r = i%2===0?220:120;
-      let a = i*Math.PI/10;
-      ctx.lineTo(250+r*Math.cos(a),250+r*Math.sin(a));
-    }
-    ctx.closePath();
-    ctx.fill(); ctx.stroke();
-  }
-
-  if (t === "speech") {
-    ctx.fillRect(60,60,380,300);
-    ctx.beginPath();
-    ctx.moveTo(200,360);
-    ctx.lineTo(260,360);
-    ctx.lineTo(230,420);
-    ctx.closePath();
-    ctx.fill(); ctx.stroke();
-  }
-}
-
-function draw() {
-  ctx.clearRect(0,0,500,500);
-
-  if(templateSelect.value !== "none") drawTemplate();
-
-  ctx.font = "bold 36px " + fontSelect.value;
-  ctx.textAlign = "center";
-  ctx.fillStyle = "#000";
-  ctx.fillText(textInput.value, 250, 260);
-}
-
-function download() {
-  const link = document.createElement("a");
-  link.download = "sticker.png";
-  link.href = canvas.toDataURL();
-  link.click();
-}
-
-/* emoji */
-const emojis = "😀😁😂🤣😎😍😘😜🤪🤩🥳😭😡🤯🤖👻🔥❤️💯👍👏🙏💪✨🌟⚡🎉🎁🚀🐶🐱🐸🐼🌈⭐".split("");
-
-emojis.forEach(e=>{
-  const b=document.createElement("button");
-  b.innerHTML=e;
-  b.onclick=()=>{ textInput.value+=e; draw(); };
-  emojiPanel.appendChild(b);
-});
-
-document.getElementById("emojiBtn").onclick=()=>{
- emojiPanel.style.display=
- emojiPanel.style.display==="flex"?"none":"flex";
-};
-</script>
+<script src="script.js"></script>
 
 </body>
 </html>
