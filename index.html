@@ -3,52 +3,137 @@
 <head>
 <meta charset="UTF-8">
 <title>Funny Sticker Creator</title>
-<link rel="stylesheet" href="style.css">
+
+<style>
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: #000;
+  color: white;
+}
+
+.toolbar {
+  background: #111;
+  padding: 12px;
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+input, select, button {
+  padding: 8px;
+  font-size: 14px;
+}
+
+canvas {
+  display: block;
+  margin: 20px auto;
+  background: #222;
+  border: 2px solid #555;
+}
+
+/* emoji panel */
+
+#emojiPanel {
+  position: fixed;
+  bottom: 10px;
+  left: 10px;
+  width: 280px;
+  height: 200px;
+  background: #111;
+  border: 1px solid #444;
+  overflow-y: auto;
+  padding: 6px;
+  display: none;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+#emojiPanel button {
+  font-size: 22px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-family: "Apple Color Emoji","Segoe UI Emoji","Noto Color Emoji",sans-serif;
+}
+</style>
 </head>
 
 <body>
 
-<h1>🎉 Funny Sticker Creator 🎉</h1>
+<div class="toolbar">
+  <input id="textInput" placeholder="Type text...">
 
-<div class="container">
+  <select id="fontSelect">
+    <option>Arial</option>
+    <option>Impact</option>
+    <option>Comic Sans MS</option>
+    <option>Courier New</option>
+    <option>Verdana</option>
+    <option>Georgia</option>
+    <option>Trebuchet MS</option>
+    <option>Times New Roman</option>
+  </select>
 
-<div class="left">
+  <button id="emojiBtn">😀 Emoji</button>
+  <button onclick="draw()">Add Text</button>
+  <button onclick="download()">Download</button>
+</div>
+
 <canvas id="canvas" width="500" height="500"></canvas>
-</div>
 
-<div class="right">
+<div id="emojiPanel"></div>
 
-<input type="file" id="upload">
+<script>
+const canvas = document.getElementById("canvas");
+const ctx = canvas.getContext("2d");
+const textInput = document.getElementById("textInput");
+const fontSelect = document.getElementById("fontSelect");
+const emojiPanel = document.getElementById("emojiPanel");
 
-<input type="text" id="textInput" placeholder="Enter text">
+function draw() {
+  ctx.clearRect(0,0,canvas.width,canvas.height);
 
-<select id="templateSelect">
-<option value="none">None</option>
-<option value="circle">Circle</option>
-<option value="star">Star</option>
-</select>
+  ctx.fillStyle = "#fff";
+  ctx.fillRect(0,0,canvas.width,canvas.height);
 
-<select id="fontSelect">
-<option>Impact</option>
-<option>Arial</option>
-<option>Comic Sans MS</option>
-<option>Verdana</option>
-<option>Courier New</option>
-</select>
+  ctx.font = "bold 40px " + fontSelect.value;
+  ctx.textAlign = "center";
+  ctx.fillStyle = "#000";
+  ctx.fillText(textInput.value, canvas.width/2, canvas.height/2);
+}
 
-<input type="color" id="colorPicker">
+function download() {
+  const link = document.createElement("a");
+  link.download = "sticker.png";
+  link.href = canvas.toDataURL();
+  link.click();
+}
 
-<button onclick="addText()">Add Text</button>
+/* emoji system */
 
-<button onclick="toggleEmoji()">😀 Emoji</button>
+const emojis = [
+"😀","😁","😂","🤣","😎","😍","😘","😜","🤪","🤩","🥳",
+"😡","😭","😱","🤯","😴","🤖","👻","💀","🔥","❤️","💯",
+"👍","👏","🙏","💪","🤝","✨","🌟","⚡","🎉","🎁","🚀",
+"🐶","🐱","🦁","🐸","🐼","🐵","🌈","☀️","🌙","⭐"
+];
 
-<div id="emojiPanel" class="emoji-panel"></div>
+emojis.forEach(e => {
+  const btn = document.createElement("button");
+  btn.innerHTML = e;
+  btn.onclick = () => {
+    textInput.value += e;
+    draw();
+  };
+  emojiPanel.appendChild(btn);
+});
 
-<button onclick="downloadSticker()">Download Sticker</button>
+document.getElementById("emojiBtn").onclick = () => {
+  emojiPanel.style.display =
+    emojiPanel.style.display === "flex" ? "none" : "flex";
+};
+</script>
 
-</div>
-</div>
-
-<script src="script.js"></script>
 </body>
 </html>
