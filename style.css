@@ -1,65 +1,37 @@
 body {
-  font-family: Arial;
-  background: #111;
-  color: white;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  margin: 0;
+background: black;
+color: white;
+font-family: Arial;
+text-align: center;
 }
 
-h1 {
-  margin: 20px;
-}
-
-.container {
-  display: flex;
-  gap: 30px;
-}
-
-canvas {
-  border: 4px solid white;
-  border-radius: 15px;
-  background: #000;
-}
-
-.right {
-  width: 250px;
-  display: flex;
-  flex-direction: column;
+.toolbar {
+padding: 10px;
+background: #111;
 }
 
 input, select, button {
-  margin: 8px 0;
-  padding: 10px;
-  border-radius: 10px;
-  border: none;
+margin: 5px;
+padding: 8px;
+font-size: 14px;
 }
 
-button {
-  background: #ff4081;
-  color: white;
-  cursor: pointer;
+canvas {
+border: 1px solid white;
+margin-top: 20px;
+background: black;
 }
 
-button:hover {
-  background: #e91e63;
+#emojiPanel {
+display: none;
+height: 150px;
+overflow-y: scroll;
+background: #222;
+padding: 10px;
 }
 
-.emoji-panel {
-  display: none;
-  height: 150px;
-  overflow-y: scroll;
-  background: #222;
-  padding: 5px;
-  border-radius: 10px;
-  margin-top: 5px;
-}
-
-.emoji-panel button {
-  font-family: "Apple Color Emoji","Segoe UI Emoji","Noto Color Emoji",sans-serif;
-  font-size: 26px;
-  background: none;
-  border: none;
-  cursor: pointer;
+.emoji {
+font-size: 22px;
+cursor: pointer;
+margin: 4px;
 }
