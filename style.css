@@ -4,7 +4,7 @@ body {
   background: linear-gradient(135deg, #ff9a9e, #fad0c4, #fbc2eb, #a6c1ee);
   background-size: 400% 400%;
   animation: gradientBG 15s ease infinite;
-  padding: 10px;   /* कमी padding */
+  padding: 5px;   /* कमी padding */
   margin: 0;       /* default margin काढा */
   overflow: hidden; /* scroll bar काढा */
 }
@@ -52,3 +52,4 @@ button:hover {
 select, input {
   background: #fff;
 }
+
