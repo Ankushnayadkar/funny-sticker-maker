@@ -3,29 +3,28 @@ const ctx = canvas.getContext("2d");
 let uploadedImage = null;
 
 // Upload image
-document.getElementById("upload").addEventListener("change", function(e) {
+document.getElementById("upload").addEventListener("change", e => {
   const file = e.target.files[0];
   const reader = new FileReader();
-  reader.onload = function(event) {
+  reader.onload = event => {
     const img = new Image();
-    img.onload = function() {
+    img.onload = () => {
       uploadedImage = img;
-      drawSticker(); // draw immediately
-    }
+      drawSticker();
+    };
     img.src = event.target.result;
-  }
+  };
   reader.readAsDataURL(file);
 });
 
-// Draw sticker with template + text
+// Draw sticker
 function drawSticker(text = "") {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
   const template = document.getElementById("templateSelect").value;
 
-  // Circle template
   if (template === "circle") {
     ctx.beginPath();
-    ctx.arc(canvas.width/2, canvas.height/2, canvas.width/2 - 10, 0, Math.PI * 2);
+    ctx.arc(canvas.width/2, canvas.height/2, canvas.width/2 - 10, 0, Math.PI*2);
     ctx.fillStyle = "#fff";
     ctx.fill();
     ctx.strokeStyle = "#000";
@@ -33,7 +32,6 @@ function drawSticker(text = "") {
     ctx.stroke();
   }
 
-  // Star template
   if (template === "star") {
     ctx.fillStyle = "#fff";
     ctx.beginPath();
@@ -54,33 +52,25 @@ function drawSticker(text = "") {
     ctx.stroke();
   }
 
-  // Image-based templates (speech, cloud, badge, meme)
   if (["speech","cloud","badge","meme"].includes(template)) {
     const templateImg = new Image();
-    templateImg.src = "templates/" + template + ".png"; // repo path
+    templateImg.src = "templates/" + template + ".png";
     templateImg.onload = () => {
       ctx.drawImage(templateImg, 0, 0, canvas.width, canvas.height);
-      if (uploadedImage) {
-        ctx.drawImage(uploadedImage, 0, 0, canvas.width, canvas.height);
-      }
+      if (uploadedImage) ctx.drawImage(uploadedImage, 0, 0, canvas.width, canvas.height);
       drawText(text);
     };
     return;
   }
 
-  // Draw uploaded image inside circle/star
   if (uploadedImage) {
-    ctx.save();
-    ctx.clip();
     ctx.drawImage(uploadedImage, 0, 0, canvas.width, canvas.height);
-    ctx.restore();
   }
 
-   // Add text
   if (text) drawText(text);
 }
 
-// Text styling
+// Draw text
 function drawText(text) {
   const font = document.getElementById("fontSelect").value;
   const color = document.getElementById("colorPicker").value;
@@ -95,13 +85,13 @@ function drawText(text) {
   ctx.strokeText(text, canvas.width/2, canvas.height - 40);
 }
 
-// Add text button
+// Add text
 function addText() {
   const text = document.getElementById("textInput").value;
   drawSticker(text);
 }
 
-// Add emoji to text input
+// Add emoji
 function addEmoji() {
   const emoji = document.getElementById("emojiSelect").value;
   const textInput = document.getElementById("textInput");
@@ -109,7 +99,7 @@ function addEmoji() {
   drawSticker(textInput.value);
 }
 
-// Download sticker button
+// Download sticker
 function downloadSticker() {
   const text = document.getElementById("textInput").value;
   drawSticker(text);
