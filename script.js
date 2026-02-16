@@ -1,10 +1,28 @@
 const canvas = document.getElementById("canvas");
 const ctx = canvas.getContext("2d");
+let uploadedImage = null;
 
-function drawSticker(text, template="circle") {
+// Upload image
+document.getElementById("upload").addEventListener("change", function(e) {
+  const file = e.target.files[0];
+  const reader = new FileReader();
+  reader.onload = function(event) {
+    const img = new Image();
+    img.onload = function() {
+      uploadedImage = img;
+      drawSticker(); // draw immediately
+    }
+    img.src = event.target.result;
+  }
+  reader.readAsDataURL(file);
+});
+
+// Draw sticker with template + text
+function drawSticker(text = "") {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
+  const template = document.getElementById("templateSelect").value;
 
-  // Background template
+  // Circle template
   if (template === "circle") {
     ctx.beginPath();
     ctx.arc(canvas.width/2, canvas.height/2, canvas.width/2 - 10, 0, Math.PI * 2);
@@ -13,9 +31,11 @@ function drawSticker(text, template="circle") {
     ctx.strokeStyle = "#000";
     ctx.lineWidth = 5;
     ctx.stroke();
-  } else if (template === "star") {
-    // Simple star shape
-    ctx.fillStyle = "#ffe4ec";
+  }
+
+  // Star template
+  if (template === "star") {
+    ctx.fillStyle = "#fff";
     ctx.beginPath();
     for (let i = 0; i < 5; i++) {
       ctx.lineTo(
@@ -29,27 +49,62 @@ function drawSticker(text, template="circle") {
     }
     ctx.closePath();
     ctx.fill();
+    ctx.strokeStyle = "#000";
+    ctx.lineWidth = 5;
     ctx.stroke();
   }
 
-  // Text styling
-  ctx.font = "bold 32px Comic Sans MS";
+  // Image-based templates (speech, cloud, badge, meme)
+  if (["speech","cloud","badge","meme"].includes(template)) {
+    const templateImg = new Image();
+    templateImg.src = "templates/" + template + ".png"; // repo path
+    templateImg.onload = () => {
+      ctx.drawImage(templateImg, 0, 0, canvas.width, canvas.height);
+
+      // If user uploaded an image, draw it inside template
+      if (uploadedImage) {
+        ctx.drawImage(uploadedImage, 0, 0, canvas.width, canvas.height);
+      }
+
+      // Add text
+      drawText(text);
+    };
+    return; // stop here until template image loads
+  }
+
+  // Draw uploaded image inside circle/star
+  if (uploadedImage) {
+    ctx.save();
+    ctx.clip();
+    ctx.drawImage(uploadedImage, 0, 0, canvas.width, canvas.height);
+    ctx.restore();
+  }
+
+  // Add text
+  if (text) drawText(text);
+}
+
+// Text styling
+function drawText(text) {
+  const font = document.getElementById("fontSelect").value;
+  ctx.font = "bold 32px " + font;
   ctx.textAlign = "center";
   ctx.fillStyle = "#ff4081";
   ctx.strokeStyle = "#000";
   ctx.lineWidth = 3;
-  ctx.shadowColor = "rgba(0,0,0,0.5)";
-  ctx.shadowBlur = 6;
-  ctx.fillText(text, canvas.width/2, canvas.height/2);
-  ctx.strokeText(text, canvas.width/2, canvas.height/2);
+  ctx.shadowColor = "rgba(0,255,255,0.7)"; // neon glow
+  ctx.shadowBlur = 10;
+  ctx.fillText(text, canvas.width/2, canvas.height - 40);
+  ctx.strokeText(text, canvas.width/2, canvas.height - 40);
 }
 
+// Add text button
 function addText() {
   const text = document.getElementById("textInput").value;
-  const template = document.getElementById("templateSelect").value;
-  drawSticker(text, template);
+  drawSticker(text);
 }
 
+// Download sticker button
 function downloadSticker() {
   const link = document.createElement("a");
   link.download = "sticker.png";
