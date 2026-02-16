@@ -3,150 +3,57 @@
 <head>
   <meta charset="UTF-8">
   <title>🎉 Funny Sticker Creator 🎉</title>
-  <style>
-    html, body {
-      height: 100%;
-      margin: 0;
-      padding: 0;
-      overflow: hidden;
-    }
-
-    body {
-      font-family: 'Comic Sans MS', cursive, sans-serif;
-      background: linear-gradient(135deg, #ff9a9e, #fad0c4, #fbc2eb, #a6c1ee);
-      background-size: 400% 400%;
-      animation: gradientBG 15s ease infinite;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-    }
-
-    @keyframes gradientBG {
-      0% {background-position: 0% 50%;}
-      50% {background-position: 100% 50%;}
-      100% {background-position: 0% 50%;}
-    }
-
-    .container {
-      display: flex;
-      justify-content: center;
-      align-items: flex-start;
-      gap: 40px;
-      background: rgba(255,255,255,0.1);
-      padding: 20px;
-      border-radius: 20px;
-      box-shadow: 0 8px 20px rgba(0,0,0,0.3);
-    }
-
-    .left {
-      flex: 1;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-    }
-
-    .right {
-      flex: 1;
-      text-align: left;
-      color: #fff;
-      font-size: 1.1em;
-    }
-
-    h1 {
-      text-align: center;
-      color: #fff;
-      text-shadow: 2px 2px 5px #000;
-      font-size: 2em;
-      margin-bottom: 20px;
-    }
-
-    canvas {
-      border: 5px solid #fff;
-      border-radius: 20px;
-      background: transparent;
-      box-shadow: 0 8px 20px rgba(0,0,0,0.3);
-      max-width: 400px;
-      max-height: 400px;
-    }
-
-    input, button, select {
-      margin: 8px 0;
-      padding: 10px 20px;
-      border-radius: 12px;
-      border: 3px solid #fff;
-      font-size: 1em;
-      display: block;
-      width: 100%;
-    }
-
-    button {
-      background: #ff4081;
-      color: white;
-      cursor: pointer;
-      transition: transform 0.2s ease, background 0.3s ease;
-    }
-
-    button:hover {
-      background: #e91e63;
-      transform: scale(1.05);
-    }
-
-    select, input[type="color"], input[type="file"], input[type="text"] {
-      background: #fff;
-      color: #000;
-    }
-  </style>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <div>
-    <h1>🎉 Funny Sticker Creator 🎉</h1>
-    <div class="container">
-      <!-- Left side: Canvas -->
-      <div class="left">
-        <canvas id="canvas" width="400" height="400"></canvas>
-      </div>
+  <h1>🎉 Funny Sticker Creator 🎉</h1>
+  <div class="container">
+    <!-- Left side: Canvas -->
+    <div class="left">
+      <canvas id="canvas" width="400" height="400"></canvas>
+    </div>
 
-      <!-- Right side: Controls -->
-      <div class="right">
-        <input type="file" id="upload" accept="image/*">
-        <input type="text" id="textInput" placeholder="Add funny text!">
+    <!-- Right side: Controls -->
+    <div class="right">
+      <input type="file" id="upload" accept="image/*">
+      <input type="text" id="textInput" placeholder="Add funny text!">
 
-        <label for="templateSelect">Choose Template:</label>
-        <select id="templateSelect">
-          <option value="circle">Circle</option>
-          <option value="star">Star</option>
-          <option value="speech">Speech Bubble</option>
-          <option value="cloud">Cloud</option>
-          <option value="badge">Badge</option>
-          <option value="meme">Meme Frame</option>
-        </select>
+      <label for="templateSelect">Choose Template:</label>
+      <select id="templateSelect">
+        <option value="circle">Circle</option>
+        <option value="star">Star</option>
+        <option value="speech">Speech Bubble</option>
+        <option value="cloud">Cloud</option>
+        <option value="badge">Badge</option>
+        <option value="meme">Meme Frame</option>
+      </select>
 
-        <label for="fontSelect">Choose Font:</label>
-        <select id="fontSelect">
-          <option value="Comic Sans MS">Comic Sans</option>
-          <option value="Impact">Impact</option>
-          <option value="Arial">Arial</option>
-          <option value="Courier New">Courier</option>
-        </select>
+      <label for="fontSelect">Choose Font:</label>
+      <select id="fontSelect">
+        <option value="Comic Sans MS">Comic Sans</option>
+        <option value="Impact">Impact</option>
+        <option value="Arial">Arial</option>
+        <option value="Courier New">Courier</option>
+      </select>
 
-        <label for="emojiSelect">Choose Emoji:</label>
-        <select id="emojiSelect" onchange="addEmoji()">
-          <option value="">None</option>
-          <option value="😀">😀</option>
-          <option value="😂">😂</option>
-          <option value="😍">😍</option>
-          <option value="😎">😎</option>
-          <option value="🤩">🤩</option>
-          <option value="🎉">🎉</option>
-        </select>
+      <label for="emojiSelect">Choose Emoji:</label>
+      <select id="emojiSelect" onchange="addEmoji()">
+        <option value="">None</option>
+        <option value="😀">😀</option>
+        <option value="😂">😂</option>
+        <option value="😍">😍</option>
+        <option value="😎">😎</option>
+        <option value="🤩">🤩</option>
+        <option value="🎉">🎉</option>
+      </select>
 
-        <label for="colorPicker">Choose Text Color:</label>
-        <input type="color" id="colorPicker" value="#ff4081">
+      <label for="colorPicker">Choose Text Color:</label>
+      <input type="color" id="colorPicker" value="#ff4081">
 
-        <button onclick="addText()">Add Text</button>
-        <button onclick="downloadSticker()">Download Sticker</button>
-      </div>
+      <button onclick="addText()">Add Text</button>
+      <button onclick="downloadSticker()">Download Sticker</button>
     </div>
   </div>
+  <script src="script.js"></script>
 </body>
 </html>
