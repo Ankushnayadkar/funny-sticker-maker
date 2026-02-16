@@ -9,9 +9,7 @@ let textY = 200;
 function draw() {
 ctx.clearRect(0,0,400,400);
 
-if (img) {
-ctx.drawImage(img,0,0,400,400);
-}
+if (img) ctx.drawImage(img,0,0,400,400);
 
 ctx.fillStyle = document.getElementById("colorPicker").value;
 ctx.font = "30px " + document.getElementById("fontSelect").value;
@@ -32,8 +30,8 @@ img.src = reader.result;
 reader.readAsDataURL(file);
 };
 
-document.getElementById("textInput").oninput = e => {
-text = e.target.value;
+document.getElementById("addText").onclick = () => {
+text = document.getElementById("textInput").value;
 draw();
 };
 
