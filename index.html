@@ -1,111 +1,121 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
 <meta charset="UTF-8">
-<title>Sticker Creator Pro</title>
+<title>Sticker Editor</title>
 
 <style>
 body {
   margin: 0;
-  font-family: Arial;
   background: #000;
+  font-family: Arial;
   color: white;
-  text-align: center;
 }
 
-.container {
-  display: flex;
-  justify-content: center;
-  gap: 20px;
-  padding: 20px;
-  flex-wrap: wrap;
-}
-
-canvas {
-  background: white;
-  border-radius: 12px;
-  cursor: crosshair;
-}
-
-.controls {
-  width: 320px;
-  background: #111;
-  padding: 15px;
-  border-radius: 12px;
-}
-
-input, select, button {
-  width: 100%;
+.toolbar {
   padding: 10px;
-  margin: 6px 0;
-  border-radius: 8px;
-  border: none;
+  background: #111;
+  display: flex;
+  gap: 10px;
+}
+
+input {
+  padding: 8px;
+  font-size: 16px;
+  width: 250px;
 }
 
 button {
-  background: hotpink;
-  color: white;
-  font-weight: bold;
+  padding: 8px 12px;
+  font-size: 14px;
   cursor: pointer;
+}
+
+#preview {
+  margin: 40px;
+  font-size: 32px;
+  min-height: 60px;
+}
+
+/* emoji panel */
+
+.emoji-panel {
+  position: absolute;
+  bottom: 80px;
+  left: 20px;
+  width: 260px;
+  height: 200px;
+  background: #111;
+  border: 1px solid #333;
+  border-radius: 10px;
+  overflow-y: scroll;
+  padding: 8px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.emoji-panel span {
+  cursor: pointer;
+  font-size: 22px;
+}
+
+.hidden {
+  display: none;
 }
 </style>
 </head>
 
 <body>
 
-<h1>🎨 Sticker Creator Pro</h1>
-
-<div class="container">
-
-<canvas id="canvas" width="400" height="400"></canvas>
-
-<div class="controls">
-
-<input type="file" id="upload">
-
-<input type="text" id="textInput" placeholder="Type text">
-
-<button id="addText">Add Text</button>
-
-<button id="emojiBtn">😀 Emoji</button>
-<div id="emojiPanel"></div>
-
-<select id="fontSelect">
-<option>Impact</option>
-<option>Arial</option>
-<option>Comic Sans MS</option>
-<option>Courier New</option>
-<option>Verdana</option>
-<option>Georgia</option>
-<option>Tahoma</option>
-<option>Times New Roman</option>
-<option>Arial Black</option>
-<option>Calibri</option>
-<option>Rockwell</option>
-</select>
-
-<input type="color" id="colorPicker" value="#ff4081">
-
-<select id="libraryCategory">
-<option value="">Choose Library</option>
-<option value="funny">Funny</option>
-<option value="savage">Savage</option>
-<option value="insulting">Insult</option>
-<option value="wishes">Wishes</option>
-<option value="hindi">Hindi</option>
-<option value="festival">Festival</option>
-</select>
-
-<button id="randomLine">Random Line</button>
-
-<button id="download">Download Sticker</button>
-
-</div>
+<div class="toolbar">
+  <input id="textInput" placeholder="Type text...">
+  <button id="emojiBtn">😀 Emoji</button>
 </div>
 
-<script src="library.js"></script>
-<script src="script.js"></script>
-<script src="emoji.js"></script>
+<div id="preview"></div>
+
+<div id="emojiPanel" class="emoji-panel hidden"></div>
+
+<script>
+const emojiBtn = document.getElementById("emojiBtn");
+const emojiPanel = document.getElementById("emojiPanel");
+const textInput = document.getElementById("textInput");
+const preview = document.getElementById("preview");
+
+/* live preview */
+textInput.addEventListener("input", () => {
+  preview.textContent = textInput.value;
+});
+
+/* emoji list */
+const emojis = [
+"😀","😁","😂","🤣","😎","😍","😘","😜","🤪","🤩","🥳",
+"😡","😭","😱","🤯","😴","🤖","👻","💀","🔥","❤️","💯",
+"👍","👎","👏","🙏","💪","🤝","👀","✨","🌟","⚡",
+"🍕","🍔","🍟","🍺","🍩","🎉","🎁","🎵","🚀","🏆",
+"🐶","🐱","🦁","🐸","🐼","🐵","🌈","☀️","🌙","⭐",
+"💥","💣","😈","🤡","😹","🙈","🙉","🙊"
+];
+
+/* generate emoji grid */
+emojis.forEach(e => {
+  const span = document.createElement("span");
+  span.textContent = e;
+
+  span.onclick = () => {
+    textInput.value += e;
+    preview.textContent = textInput.value;
+  };
+
+  emojiPanel.appendChild(span);
+});
+
+/* toggle emoji panel */
+emojiBtn.onclick = () => {
+  emojiPanel.classList.toggle("hidden");
+};
+</script>
 
 </body>
 </html>
