@@ -76,20 +76,20 @@ function drawSticker(text = "") {
     ctx.restore();
   }
 
-  // Add text
+   // Add text
   if (text) drawText(text);
 }
 
 // Text styling
 function drawText(text) {
   const font = document.getElementById("fontSelect").value;
-  const color = document.getElementById("colorPicker").value; // selected color
+  const color = document.getElementById("colorPicker").value;
   ctx.font = "bold 32px " + font;
   ctx.textAlign = "center";
-  ctx.fillStyle = color; // dynamic color
+  ctx.fillStyle = color;
   ctx.strokeStyle = "#000";
   ctx.lineWidth = 3;
-  ctx.shadowColor = "rgba(0,255,255,0.7)"; // neon glow
+  ctx.shadowColor = "rgba(0,255,255,0.7)";
   ctx.shadowBlur = 10;
   ctx.fillText(text, canvas.width/2, canvas.height - 40);
   ctx.strokeText(text, canvas.width/2, canvas.height - 40);
@@ -105,7 +105,7 @@ function addText() {
 function addEmoji() {
   const emoji = document.getElementById("emojiSelect").value;
   const textInput = document.getElementById("textInput");
-  textInput.value += emoji; // append emoji to text
+  textInput.value += emoji;
   drawSticker(textInput.value);
 }
 
