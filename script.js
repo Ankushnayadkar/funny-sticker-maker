@@ -1,78 +1,82 @@
 const canvas = document.getElementById("canvas");
 const ctx = canvas.getContext("2d");
 
+let img = null;
 let text = "";
-let font = "Arial";
+let textX = 200;
+let textY = 200;
 
-const emojis = "😀😁😂🤣😎😍🥳😡👻🔥⭐❤️🚀💀🎉✨🍕🐶".split("");
+function draw() {
+ctx.clearRect(0,0,400,400);
+if (img) ctx.drawImage(img,0,0,400,400);
 
-const emojiPanel = document.getElementById("emojiPanel");
-
-emojis.forEach(e => {
-  const span = document.createElement("span");
-  span.innerText = e;
-  span.onclick = () => addEmoji(e);
-  emojiPanel.appendChild(span);
-});
-
-function toggleEmoji() {
-  emojiPanel.style.display =
-    emojiPanel.style.display === "none" ? "block" : "none";
+ctx.fillStyle = document.getElementById("colorPicker").value;
+ctx.font = "30px " + document.getElementById("fontSelect").value;
+ctx.textAlign = "center";
+ctx.fillText(text, textX, textY);
 }
 
-function addEmoji(e) {
-  ctx.font = "60px Arial";
-  ctx.fillText(e, 250, 300);
-}
+document.getElementById("upload").onchange = e => {
+const file = e.target.files[0];
+const reader = new FileReader();
 
-function drawTemplate(type) {
-  ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-  ctx.fillStyle = "#222";
-
-  if (type === "circle") {
-    ctx.beginPath();
-    ctx.arc(300, 300, 250, 0, Math.PI * 2);
-    ctx.fill();
-  }
-
-  if (type === "square") {
-    ctx.fillRect(50, 50, 500, 500);
-  }
-
-  if (type === "star") {
-    ctx.beginPath();
-    for (let i = 0; i < 5; i++) {
-      ctx.lineTo(
-        300 + 250 * Math.cos((18 + i * 72) / 180 * Math.PI),
-        300 - 250 * Math.sin((18 + i * 72) / 180 * Math.PI)
-      );
-      ctx.lineTo(
-        300 + 100 * Math.cos((54 + i * 72) / 180 * Math.PI),
-        300 - 100 * Math.sin((54 + i * 72) / 180 * Math.PI)
-      );
-    }
-    ctx.closePath();
-    ctx.fill();
-  }
-}
-
-document.getElementById("templateSelect").onchange = e => {
-  drawTemplate(e.target.value);
+reader.onload = () => {
+img = new Image();
+img.onload = draw;
+img.src = reader.result;
 };
 
-function addText() {
-  text = document.getElementById("textInput").value;
-  font = document.getElementById("fontSelect").value;
+reader.readAsDataURL(file);
+};
 
-  ctx.font = "40px " + font;
-  ctx.fillStyle = "white";
-  ctx.fillText(text, 150, 100);
-}
+document.getElementById("addText").onclick = () => {
+text = document.getElementById("textInput").value;
+draw();
+};
 
-function download() {
-  const link = document.createElement("a");
-  link.download = "sticker.png";
-  link.href = canvas.toDataURL();
-  link.click();
-}
+document.getElementById("fontSelect").onchange = draw;
+document.getElementById("colorPicker").onchange = draw;
+
+canvas.onmousedown = e => {
+textX = e.offsetX;
+textY = e.offsetY;
+draw();
+};
+
+document.getElementById("download").onclick = () => {
+const link = document.createElement("a");
+link.download = "sticker.png";
+link.href = canvas.toDataURL();
+link.click();
+};
+
+document.getElementById("randomLine").onclick = () => {
+const cat = document.getElementById("libraryCategory").value;
+if (!cat) return;
+
+const lines = LIBRARY[cat];
+const random = lines[Math.floor(Math.random()*lines.length)];
+
+text = random;
+document.getElementById("textInput").value = random;
+draw();
+};
+
+// emoji panel
+const emojiBtn = document.getElementById("emojiBtn");
+const emojiPanel = document.getElementById("emojiPanel");
+const textInput = document.getElementById("textInput");
+
+const emojis = "😀😁😂🤣😃😄😅😆😉😊😍😘😎🤩🥳😜🤪🤯😡😱😴🤤🤓😇😈👻💀❤️🧡💛💚💙💜🖤🤍🔥✨⚡💥⭐🌟🎉🚀☕🍕🍔🍟🍩⚽🎮📱💻";
+
+emojis.split("").forEach(e => {
+const span = document.createElement("span");
+span.textContent = e;
+span.onclick = () => textInput.value += e;
+emojiPanel.appendChild(span);
+});
+
+emojiBtn.onclick = () => {
+emojiPanel.style.display =
+emojiPanel.style.display === "block" ? "none" : "block";
+};
