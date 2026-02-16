@@ -49,6 +49,7 @@
   <select id="templateSelect">
     <option value="circle">Circle</option>
     <option value="star">Star</option>
+    <!-- Later you can add: speech, cloud, badge -->
   </select><br>
   
   <!-- Buttons -->
@@ -63,6 +64,7 @@
     const ctx = canvas.getContext("2d");
     let uploadedImage = null;
 
+    // Upload image
     document.getElementById("upload").addEventListener("change", function(e) {
       const file = e.target.files[0];
       const reader = new FileReader();
@@ -77,6 +79,7 @@
       reader.readAsDataURL(file);
     });
 
+    // Draw sticker with template + text
     function drawSticker(text = "") {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
       const template = document.getElementById("templateSelect").value;
@@ -135,11 +138,13 @@
       }
     }
 
+    // Add text button
     function addText() {
       const text = document.getElementById("textInput").value;
       drawSticker(text);
     }
 
+    // Download sticker button
     function downloadSticker() {
       const link = document.createElement("a");
       link.download = "sticker.png";
