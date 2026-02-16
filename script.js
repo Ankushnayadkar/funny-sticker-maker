@@ -60,16 +60,12 @@ function drawSticker(text = "") {
     templateImg.src = "templates/" + template + ".png"; // repo path
     templateImg.onload = () => {
       ctx.drawImage(templateImg, 0, 0, canvas.width, canvas.height);
-
-      // If user uploaded an image, draw it inside template
       if (uploadedImage) {
         ctx.drawImage(uploadedImage, 0, 0, canvas.width, canvas.height);
       }
-
-      // Add text
       drawText(text);
     };
-    return; // stop here until template image loads
+    return;
   }
 
   // Draw uploaded image inside circle/star
@@ -87,9 +83,10 @@ function drawSticker(text = "") {
 // Text styling
 function drawText(text) {
   const font = document.getElementById("fontSelect").value;
+  const color = document.getElementById("colorPicker").value; // selected color
   ctx.font = "bold 32px " + font;
   ctx.textAlign = "center";
-  ctx.fillStyle = "#ff4081";
+  ctx.fillStyle = color; // dynamic color
   ctx.strokeStyle = "#000";
   ctx.lineWidth = 3;
   ctx.shadowColor = "rgba(0,255,255,0.7)"; // neon glow
@@ -104,13 +101,18 @@ function addText() {
   drawSticker(text);
 }
 
+// Add emoji to text input
+function addEmoji() {
+  const emoji = document.getElementById("emojiSelect").value;
+  const textInput = document.getElementById("textInput");
+  textInput.value += emoji; // append emoji to text
+  drawSticker(textInput.value);
+}
+
 // Download sticker button
 function downloadSticker() {
-  // First redraw everything to ensure canvas is not empty
   const text = document.getElementById("textInput").value;
   drawSticker(text);
-
-  // Then export as PNG with transparency
   const link = document.createElement("a");
   link.download = "sticker.png";
   link.href = canvas.toDataURL("image/png");
