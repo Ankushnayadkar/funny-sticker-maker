@@ -8,7 +8,6 @@ let textY = 200;
 
 function draw() {
 ctx.clearRect(0,0,400,400);
-
 if (img) ctx.drawImage(img,0,0,400,400);
 
 ctx.fillStyle = document.getElementById("colorPicker").value;
@@ -61,4 +60,23 @@ const random = lines[Math.floor(Math.random()*lines.length)];
 text = random;
 document.getElementById("textInput").value = random;
 draw();
+};
+
+// emoji panel
+const emojiBtn = document.getElementById("emojiBtn");
+const emojiPanel = document.getElementById("emojiPanel");
+const textInput = document.getElementById("textInput");
+
+const emojis = "😀😁😂🤣😃😄😅😆😉😊😍😘😎🤩🥳😜🤪🤯😡😱😴🤤🤓😇😈👻💀❤️🧡💛💚💙💜🖤🤍🔥✨⚡💥⭐🌟🎉🚀☕🍕🍔🍟🍩⚽🎮📱💻";
+
+emojis.split("").forEach(e => {
+const span = document.createElement("span");
+span.textContent = e;
+span.onclick = () => textInput.value += e;
+emojiPanel.appendChild(span);
+});
+
+emojiBtn.onclick = () => {
+emojiPanel.style.display =
+emojiPanel.style.display === "block" ? "none" : "block";
 };
