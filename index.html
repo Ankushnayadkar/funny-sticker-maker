@@ -1,124 +1,55 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+<meta charset="UTF-8">
 <title>Funny Sticker Creator</title>
-
-<style>
-body {
-  font-family: Arial;
-  background: #d9b3d9;
-  text-align: center;
-}
-
-#canvasWrapper {
-  position: relative;
-  display: inline-block;
-  border: 5px solid white;
-  border-radius: 20px;
-  overflow: hidden;
-}
-
-canvas {
-  cursor: grab;
-}
-
-.controls {
-  margin-top: 10px;
-}
-
-input, button {
-  padding: 10px;
-  margin: 5px;
-  font-size: 16px;
-}
-
-button {
-  background: hotpink;
-  border: none;
-  color: white;
-  border-radius: 10px;
-}
-</style>
+<link rel="stylesheet" href="style.css">
 </head>
 
 <body>
 
 <h1>🎉 Funny Sticker Creator 🎉</h1>
 
-<div id="canvasWrapper">
-  <canvas id="canvas" width="500" height="500"></canvas>
+<div class="container">
+
+<div class="editor">
+<canvas id="canvas" width="500" height="500"></canvas>
 </div>
 
 <div class="controls">
+
 <input type="file" id="upload">
-<br>
-<input type="text" id="textInput" placeholder="Type funny text">
-<button onclick="addText()">Add Text</button>
-<br>
-<button onclick="download()">Download Sticker</button>
+
+<input type="text" id="textInput" placeholder="Enter text">
+
+<select id="fontSelect">
+<option value="Impact">Impact</option>
+<option value="Comic Sans MS">Comic Sans</option>
+<option value="Arial">Arial</option>
+</select>
+
+<input type="color" id="colorPicker">
+
+<select id="emojiSelect">
+<option value="">Emoji</option>
+<option>😎</option>
+<option>😂</option>
+<option>🔥</option>
+<option>💀</option>
+</select>
+
+<select id="templateSelect">
+<option value="circle">Circle</option>
+<option value="star">Star</option>
+<option value="heart">Heart</option>
+</select>
+
+<button id="addText">Add Text</button>
+<button id="download">Download Sticker</button>
+
+</div>
 </div>
 
-<script>
-const canvas = document.getElementById("canvas");
-const ctx = canvas.getContext("2d");
-
-let image = null;
-let text = "";
-let textX = 50;
-let textY = 450;
-
-let dragging = false;
-
-// Upload image
-document.getElementById("upload").addEventListener("change", function(e) {
-  const reader = new FileReader();
-  reader.onload = function(event) {
-    image = new Image();
-    image.onload = draw;
-    image.src = event.target.result;
-  };
-  reader.readAsDataURL(e.target.files[0]);
-});
-
-function addText() {
-  text = document.getElementById("textInput").value;
-  draw();
-}
-
-function draw() {
-  ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-  if (image) {
-    ctx.drawImage(image, 0, 0, canvas.width, canvas.height);
-  }
-
-  ctx.font = "40px Comic Sans MS";
-  ctx.fillStyle = "cyan";
-  ctx.strokeStyle = "black";
-  ctx.lineWidth = 3;
-
-  ctx.strokeText(text, textX, textY);
-  ctx.fillText(text, textX, textY);
-}
-
-// Drag logic
-canvas.addEventListener("mousedown", e => dragging = true);
-canvas.addEventListener("mouseup", e => dragging = false);
-canvas.addEventListener("mousemove", e => {
-  if (!dragging) return;
-  const rect = canvas.getBoundingClientRect();
-  textX = e.clientX - rect.left;
-  textY = e.clientY - rect.top;
-  draw();
-});
-
-function download() {
-  const link = document.createElement("a");
-  link.download = "sticker.png";
-  link.href = canvas.toDataURL();
-  link.click();
-}
-</script>
-
+<script src="script.js"></script>
 </body>
 </html>
