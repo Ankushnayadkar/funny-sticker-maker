@@ -61,22 +61,3 @@ text = random;
 document.getElementById("textInput").value = random;
 draw();
 };
-
-// emoji panel
-const emojiBtn = document.getElementById("emojiBtn");
-const emojiPanel = document.getElementById("emojiPanel");
-const textInput = document.getElementById("textInput");
-
-const emojis = "😀😁😂🤣😃😄😅😆😉😊😍😘😎🤩🥳😜🤪🤯😡😱😴🤤🤓😇😈👻💀❤️🧡💛💚💙💜🖤🤍🔥✨⚡💥⭐🌟🎉🚀☕🍕🍔🍟🍩⚽🎮📱💻";
-
-emojis.split("").forEach(e => {
-const span = document.createElement("span");
-span.textContent = e;
-span.onclick = () => textInput.value += e;
-emojiPanel.appendChild(span);
-});
-
-emojiBtn.onclick = () => {
-emojiPanel.style.display =
-emojiPanel.style.display === "block" ? "none" : "block";
-};
