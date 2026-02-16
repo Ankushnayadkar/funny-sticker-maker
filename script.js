@@ -4,82 +4,75 @@ const ctx = canvas.getContext("2d");
 let text = "";
 let font = "Arial";
 
+const emojis = "😀😁😂🤣😎😍🥳😡👻🔥⭐❤️🚀💀🎉✨🍕🐶".split("");
+
+const emojiPanel = document.getElementById("emojiPanel");
+
+emojis.forEach(e => {
+  const span = document.createElement("span");
+  span.innerText = e;
+  span.onclick = () => addEmoji(e);
+  emojiPanel.appendChild(span);
+});
+
+function toggleEmoji() {
+  emojiPanel.style.display =
+    emojiPanel.style.display === "none" ? "block" : "none";
+}
+
+function addEmoji(e) {
+  ctx.font = "60px Arial";
+  ctx.fillText(e, 250, 300);
+}
+
+function drawTemplate(type) {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+  ctx.fillStyle = "#222";
+
+  if (type === "circle") {
+    ctx.beginPath();
+    ctx.arc(300, 300, 250, 0, Math.PI * 2);
+    ctx.fill();
+  }
+
+  if (type === "square") {
+    ctx.fillRect(50, 50, 500, 500);
+  }
+
+  if (type === "star") {
+    ctx.beginPath();
+    for (let i = 0; i < 5; i++) {
+      ctx.lineTo(
+        300 + 250 * Math.cos((18 + i * 72) / 180 * Math.PI),
+        300 - 250 * Math.sin((18 + i * 72) / 180 * Math.PI)
+      );
+      ctx.lineTo(
+        300 + 100 * Math.cos((54 + i * 72) / 180 * Math.PI),
+        300 - 100 * Math.sin((54 + i * 72) / 180 * Math.PI)
+      );
+    }
+    ctx.closePath();
+    ctx.fill();
+  }
+}
+
+document.getElementById("templateSelect").onchange = e => {
+  drawTemplate(e.target.value);
+};
+
 function addText() {
-text = document.getElementById("textInput").value;
-font = document.getElementById("fontSelect").value;
+  text = document.getElementById("textInput").value;
+  font = document.getElementById("fontSelect").value;
 
-ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-drawTemplate();
-
-ctx.font = "50px " + font;
-ctx.fillStyle = "white";
-ctx.textAlign = "center";
-ctx.fillText(text, 300, 320);
-}
-
-function drawTemplate() {
-let template = document.getElementById("templateSelect").value;
-
-ctx.fillStyle = "#ff3c7d";
-
-if (template === "circle") {
-ctx.beginPath();
-ctx.arc(300, 300, 200, 0, Math.PI * 2);
-ctx.fill();
-}
-
-if (template === "square") {
-ctx.fillRect(100, 100, 400, 400);
-}
-
-if (template === "star") {
-ctx.beginPath();
-ctx.moveTo(300,100);
-ctx.lineTo(350,250);
-ctx.lineTo(500,250);
-ctx.lineTo(380,350);
-ctx.lineTo(420,500);
-ctx.lineTo(300,420);
-ctx.lineTo(180,500);
-ctx.lineTo(220,350);
-ctx.lineTo(100,250);
-ctx.lineTo(250,250);
-ctx.closePath();
-ctx.fill();
-}
-
-if (template === "heart") {
-ctx.beginPath();
-ctx.moveTo(300,450);
-ctx.bezierCurveTo(100,250,100,100,300,200);
-ctx.bezierCurveTo(500,100,500,250,300,450);
-ctx.fill();
-}
+  ctx.font = "40px " + font;
+  ctx.fillStyle = "white";
+  ctx.fillText(text, 150, 100);
 }
 
 function download() {
-let link = document.createElement("a");
-link.download = "sticker.png";
-link.href = canvas.toDataURL();
-link.click();
+  const link = document.createElement("a");
+  link.download = "sticker.png";
+  link.href = canvas.toDataURL();
+  link.click();
 }
-
-const emojis = "😀😁😂🤣😎😍😘😜🤩🥳😡😭👍🔥💯❤️✨⭐🌈🍕🚀⚡🎉".split("");
-
-const panel = document.getElementById("emojiPanel");
-const emojiBtn = document.getElementById("emojiBtn");
-
-emojiBtn.onclick = () => {
-panel.style.display = panel.style.display === "none" ? "block" : "none";
-};
-
-emojis.forEach(e => {
-let span = document.createElement("span");
-span.className = "emoji";
-span.textContent = e;
-span.onclick = () => {
-document.getElementById("textInput").value += e;
-};
-panel.appendChild(span);
-});
